@@ -22,12 +22,12 @@ class Comment(models.Model):
 
 class Video(models.Model):
     file = models.FileField(upload_to='video/%y')
-    title = models.CharField(max_length=5000)
-    thumbnail = models.ImageField(max_length=100)
+    title = models.CharField(max_length=5000, default='default')
+    thumbnail = models.ImageField(max_length=100, blank=True, null=True)
     views = models.IntegerField(default=0, blank=True, null=True)
-    description = models.CharField(max_length=9999)
-    # comments = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)   
-    category = models.CharField(max_length=16, choices=CATEGORIES)
+    description = models.CharField(max_length=9999, blank=True, null=True)
+    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)   
+    category = models.CharField(max_length=16, choices=CATEGORIES, blank=True, null=True)
     create_at = models.DateTimeField(default=timezone.now, blank=True)
     # created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
 

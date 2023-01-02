@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, generics
 
+import sys
+import errno
+
 
 # Create your views here.
 class VideoView(APIView):
@@ -14,6 +17,7 @@ class VideoView(APIView):
         serializer_class = VideoSerializer
 
         def post(self, request, *args, **kwargs):
+            print('THIS IS REQUEST', request.data)
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
                 serializer.save()
@@ -27,7 +31,7 @@ class VideoView(APIView):
 
         def post(self, request, *args, **kwargs):
             queryset = self.get_queryset()
-            queryset.filter(title__icontains=request.data['title'])
+            queryset = queryset.filter(title__icontains=request.data['title'])
             serializer = VideoSerializer(queryset, many=True)
             return Response(serializer.data)
 
@@ -36,7 +40,8 @@ class VideoView(APIView):
             serializer = VideoSerializer(queryset, many=True)
             return Response(serializer.data)
 
-    class Get(APIView):
+    class Get(generics.RetrieveAPIView):
+        # queryset = Video.objects.get(pk=kwargs['pk'])
         queryset = Video.objects.all()
         serializer_class = VideoSerializer
         lookup_field = 'pk'
