@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Video
 
 
+
 class VideoSerializer(serializers.ModelSerializer):
     file = serializers.FileField()
     thumbnail = serializers.ImageField()
